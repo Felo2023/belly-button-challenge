@@ -24,6 +24,7 @@ dataUrl.then(function(data)
         metaDataTag(metaData[0]);
         barChart(samples[0]);
         bubbleChart(samples[0]);
+        speedChart(metaData[0]);
     });
     
 
@@ -35,6 +36,7 @@ function optionChanged(idSelected)
     metaDataTag(metaDataSelected);
     barChart(dataSampleSelected);
     bubbleChart(dataSampleSelected);
+    speedChart(metaDataSelected);
     };
 
 
@@ -111,4 +113,33 @@ function bubbleChart(dataSampleSelected)
         },
     };
     Plotly.newPlot("bubble", dataBubbleChart, layoutBubble);
-}
+};
+
+
+function speedChart(metaDataSelected){
+let wfreq =metaDataSelected['wfreq'];
+console.log(wfreq);
+let dataSpeedChart = [
+	{
+		domain: { x: [0, 1], y: [0, 1] },
+		value: wfreq,
+		title: { text: "Scrubs per Week" },
+		type: "indicator",
+		mode: "number+delta+gauge",
+        gauge: {
+            axis: {range:[null,10],tickwidth:2},
+            steps: [
+              { range: [0, 2] },
+              { range: [2, 4]},
+              { range: [4, 6]},
+              { range: [6, 8]},
+              { range: [8, 10]},
+                    ],
+                }
+	}
+    
+];
+
+var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+Plotly.newPlot('gauge', dataSpeedChart, layout);
+};
