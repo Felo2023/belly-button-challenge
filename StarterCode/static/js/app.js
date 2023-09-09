@@ -23,7 +23,7 @@ dataUrl.then(function(data)
         });
         metaDataTag(metaData[0]);
         barChart(samples[0]);
- 
+        bubbleChart(samples[0]);
     });
     
 
@@ -34,6 +34,7 @@ function optionChanged(idSelected)
     let metaDataSelected = metaData.find((item)=>item.id == idSelected);
     metaDataTag(metaDataSelected);
     barChart(dataSampleSelected);
+    bubbleChart(dataSampleSelected);
     };
 
 
@@ -68,7 +69,7 @@ function barChart(dataSampleSelected)
     
     let dataBarChart = [trace];
     
-    let layout = {
+    let layoutBar = {
     // Include margins in the layout so the x-tick labels display correctly
         margin: 
         {
@@ -80,6 +81,34 @@ function barChart(dataSampleSelected)
         height:700,
         width:800,
                 };
-    Plotly.newPlot("bar", dataBarChart, layout);
+    Plotly.newPlot("bar", dataBarChart, layoutBar);
+}
 
+function bubbleChart(dataSampleSelected)
+{
+    let axis_x=dataSampleSelected['otu_ids'];
+    let axis_y=dataSampleSelected['sample_values'];
+    let marker_size=dataSampleSelected['sample_values'];
+    let marker_color = dataSampleSelected['otu_ids'];
+    let label= dataSampleSelected['otu_labels'];
+
+    trace={
+        x:axis_x,
+        y:axis_y,
+        text:label,
+        type:'scatter',
+        mode:'markers',
+        marker:{
+            color:marker_color,
+            size:marker_size,
+                }
+            }
+    let dataBubbleChart=[trace];
+
+    let layoutBubble = {
+        xaxis:{
+            title:{text:'OTU ID'},
+        },
+    };
+    Plotly.newPlot("bubble", dataBubbleChart, layoutBubble);
 }
